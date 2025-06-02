@@ -2,11 +2,10 @@
   "name": "react-native-voice-stream",
   "version": "0.0.1",
   "description": "A React Native module for voice streaming as base-64 string chunks",
+  "source": "src/index.ts",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "types": "lib/typescript/index.d.ts",
-  "react-native": "src/index.ts",
-  "source": "src/index.ts",
   "files": [
     "src",
     "lib",
@@ -20,6 +19,8 @@
     "!**/__mocks__"
   ],
   "scripts": {
+    "typecheck": "tsc",
+    "clean": "del-cli android/build lib",
     "prepare": "bob build",
     "release": "release-it"
   },
@@ -39,8 +40,10 @@
   "homepage": "https://github.com/omalperera/react-native-voice-stream#readme",
   "devDependencies": {
     "@react-native-community/bob": "^0.17.1",
+    "@types/react": "^19.1.6",
+    "del-cli": "^6.0.0",
     "react": "18.2.0",
-    "react-native": "0.72.0",
+    "react-native": "0.77.2",
     "release-it": "^15.6.0",
     "typescript": "^4.9.5"
   },
