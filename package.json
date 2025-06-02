@@ -1,7 +1,7 @@
 {
   "name": "react-native-voice-stream",
   "version": "0.0.1",
-  "description": "A React Native module for voice streaming as base-64 string chunks",
+  "description": "A real-time voice streaming as base-64 string chunks",
   "source": "src/index.ts",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",

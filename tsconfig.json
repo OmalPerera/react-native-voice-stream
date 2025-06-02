@@ -12,9 +12,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
-  },
-  "include": [
-    "src/**/*",
-    "index.ts"
-  ]
+  }
 } 

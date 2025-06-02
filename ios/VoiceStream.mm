@@ -1,20 +1,47 @@
 #import "VoiceStream.h"
 
 @implementation VoiceStream
+{
+    id _audioRecorder;  // Swift implementation instance
+}
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_METHOD(show:(NSString *)message) {
-    Class swiftClass = NSClassFromString(@"VoiceStreamImpl");
-    if (swiftClass) {
-        id swiftModule = [[swiftClass alloc] init];
-        if ([swiftModule respondsToSelector:@selector(show:)]) {
-            [swiftModule performSelector:@selector(show:) withObject:message];
-        } else {
-            NSLog(@"VoiceStream: Swift method 'show' not found");
++ (BOOL)requiresMainQueueSetup {
+    return NO;
+}
+
+- (NSArray<NSString *> *)supportedEvents {
+    return @[@"data"];
+}
+
+- (instancetype)init {
+    if (self = [super init]) {
+        Class swiftClass = NSClassFromString(@"VoiceStreamRecorder");
+        if (swiftClass) {
+            _audioRecorder = [[swiftClass alloc] init];
         }
-    } else {
-        NSLog(@"VoiceStream: Swift class 'VoiceStreamImpl' not found");
+    }
+    return self;
+}
+
+RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
+    if (_audioRecorder && [_audioRecorder respondsToSelector:@selector(configureWithOptions:eventEmitter:)]) {
+        [_audioRecorder performSelector:@selector(configureWithOptions:eventEmitter:) 
+                              withObject:options 
+                              withObject:self];
+    }
+}
+
+RCT_EXPORT_METHOD(start) {
+    if (_audioRecorder && [_audioRecorder respondsToSelector:@selector(startRecording)]) {
+        [_audioRecorder performSelector:@selector(startRecording)];
+    }
+}
+
+RCT_EXPORT_METHOD(stop) {
+    if (_audioRecorder && [_audioRecorder respondsToSelector:@selector(stopRecording)]) {
+        [_audioRecorder performSelector:@selector(stopRecording)];
     }
 }
 
