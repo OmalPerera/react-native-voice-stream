@@ -1,5 +1,19 @@
 #import <AVFoundation/AVFoundation.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import <React/RCTEventEmitter.h>
 
-@interface VoiceStream: RCTEventEmitter <RCTBridgeModule>
+#define kNumberBuffers 3
+
+typedef struct {
+    AudioStreamBasicDescription mDataFormat;
+    AudioQueueRef mQueue;
+    AudioQueueBufferRef mBuffers[kNumberBuffers];
+    UInt32 bufferByteSize;
+    BOOL mIsRunning;
+    __unsafe_unretained id mSelf;
+} AQRecordState;
+
+@interface VoiceStream: RCTEventEmitter <RCTBridgeModule> {
+    AQRecordState _recordState;
+}
 @end

@@ -11,13 +11,37 @@ npm install react-native-voice-stream
 
 Run `pod install` in your iOS directory.
 
+## Compatibility
+
+- **React Native**: `>=0.68.0`
+- **Platform**: iOS only (Android support coming soon)
+- **Architecture**: Supports both Old and New Architecture (TurboModules)
+
 ## Usage
 
 ```js
-import { showToast } from 'react-native-voice-stream';
+import VoiceStream, { VoiceStreamEmitter } from 'react-native-voice-stream';
 
-// Show a toast message
-showToast('Hello from native module!');
+// Initialize with options
+VoiceStream.init({ 
+  sampleRate: 44100, 
+  channels: 1,
+  bufferSize: 2048 
+});
+
+// Listen for real-time base64 audio data
+const subscription = VoiceStreamEmitter?.addListener('data', (base64Audio) => {
+  console.log('Received audio chunk:', base64Audio);
+});
+
+// Start recording
+VoiceStream.start();
+
+// Stop recording
+VoiceStream.stop();
+
+// Clean up
+subscription?.remove();
 ```
 
 ## License

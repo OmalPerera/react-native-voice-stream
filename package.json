@@ -9,10 +9,10 @@
   "files": [
     "src",
     "lib",
-    "android",
     "ios",
-    "cpp",
     "react-native-voice-stream.podspec",
+    "!android",
+    "!cpp",
     "!lib/typescript/example",
     "!**/__tests__",
     "!**/__fixtures__",
@@ -20,16 +20,19 @@
   ],
   "scripts": {
     "typecheck": "tsc",
-    "clean": "del-cli android/build lib",
+    "clean": "del-cli lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "release": "release-it",
+    "dev:install-rn": "yarn add --dev react-native@0.72.9",
+    "dev:clean": "yarn remove react-native"
   },
   "keywords": [
     "react-native",
     "voice",
     "stream",
     "base-64",
-    "native-module"
+    "native-module",
+    "ios"
   ],
   "repository": "https://github.com/omalperera/react-native-voice-stream",
   "author": "Omal Perera <omalperera8@gmail.com>",
@@ -43,13 +46,13 @@
     "@types/react": "^19.1.6",
     "del-cli": "^6.0.0",
     "react": "18.2.0",
-    "react-native": "0.77.2",
+    "react-native": "0.72.9",
     "release-it": "^15.6.0",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": ">=0.68.0"
   },
   "@react-native-community/bob": {
     "source": "src",
@@ -58,6 +61,7 @@
       "commonjs",
       "module",
       "typescript"
-    ]
+    ],
+    "exclude": "**/{__tests__,__fixtures__,__mocks__}/**"
   }
 }

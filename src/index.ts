@@ -1,6 +1,27 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native';
 
-const { VoiceStream } = NativeModules;
+const LINKING_ERROR =
+  `The package 'react-native-voice-stream' doesn't seem to be linked. Make sure: \n\n` +
+  '- You have run "pod install" in the ios/ directory\n' +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are running on iOS (Android is not supported yet)\n';
+
+const VoiceStreamNative = NativeModules.VoiceStream
+  ? NativeModules.VoiceStream
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
+
+    
+export const StreamEmitter = Platform.OS === 'ios' 
+  ? new NativeEventEmitter(VoiceStreamNative)
+  : null;
+
 
 export interface AudioStreamOptions {
   sampleRate?: number;     // Default: 44100 Hz
@@ -19,6 +40,8 @@ export interface VoiceStreamInterface {
    * Start real-time audio recording and base64 streaming
    */
   start(): void;
+
+  listen(event: "data", callback: (data: string) => void): void;
   
   /**
    * Stop audio recording
@@ -26,40 +49,26 @@ export interface VoiceStreamInterface {
   stop(): void;
 }
 
-/**
- * Event emitter for receiving real-time base64 audio data
- * Listen to 'data' events to receive base64 audio chunks
- */
-export const VoiceStreamEmitter = new NativeEventEmitter(VoiceStream);
+const eventsMap = {
+  data: 'data'
+};
 
-/**
- * Main VoiceStream module for real-time audio recording
- * 
- * @example
- * ```typescript
- * import VoiceStream, { VoiceStreamEmitter } from 'react-native-voice-stream';
- * 
- * // Initialize with options
- * VoiceStream.init({ 
- *   sampleRate: 44100, 
- *   channels: 1,
- *   bufferSize: 2048 
- * });
- * 
- * // Listen for real-time base64 audio data
- * const subscription = VoiceStreamEmitter.addListener('data', (base64Audio) => {
- *   console.log('Received audio chunk:', base64Audio);
- *   // Send to your server, save to file, etc.
- * });
- * 
- * // Start recording
- * VoiceStream.start();
- * 
- * // Stop recording
- * VoiceStream.stop();
- * 
- * // Clean up
- * subscription.remove();
- * ```
- */
-export default VoiceStream as VoiceStreamInterface;
+const VoiceStreamer = {
+  init: VoiceStreamNative.init,
+  start: VoiceStreamNative.start,
+  stop: VoiceStreamNative.stop,
+}
+
+// @ts-ignore
+VoiceStreamer.listen = (event, callback) => {
+  const nativeEvent = eventsMap[event];
+  if (!nativeEvent) {
+    throw new Error('Invalid event');
+  }
+  StreamEmitter?.removeAllListeners(nativeEvent);
+  return StreamEmitter?.addListener(nativeEvent, callback);
+};
+
+
+
+export default VoiceStreamer;

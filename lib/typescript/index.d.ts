@@ -1,4 +1,5 @@
 import { NativeEventEmitter } from 'react-native';
+export declare const StreamEmitter: NativeEventEmitter;
 export interface AudioStreamOptions {
     sampleRate?: number;
     channels?: number;
@@ -14,45 +15,15 @@ export interface VoiceStreamInterface {
      * Start real-time audio recording and base64 streaming
      */
     start(): void;
+    listen(event: "data", callback: (data: string) => void): void;
     /**
      * Stop audio recording
      */
     stop(): void;
 }
-/**
- * Event emitter for receiving real-time base64 audio data
- * Listen to 'data' events to receive base64 audio chunks
- */
-export declare const VoiceStreamEmitter: NativeEventEmitter;
-/**
- * Main VoiceStream module for real-time audio recording
- *
- * @example
- * ```typescript
- * import VoiceStream, { VoiceStreamEmitter } from 'react-native-voice-stream';
- *
- * // Initialize with options
- * VoiceStream.init({
- *   sampleRate: 44100,
- *   channels: 1,
- *   bufferSize: 2048
- * });
- *
- * // Listen for real-time base64 audio data
- * const subscription = VoiceStreamEmitter.addListener('data', (base64Audio) => {
- *   console.log('Received audio chunk:', base64Audio);
- *   // Send to your server, save to file, etc.
- * });
- *
- * // Start recording
- * VoiceStream.start();
- *
- * // Stop recording
- * VoiceStream.stop();
- *
- * // Clean up
- * subscription.remove();
- * ```
- */
-declare const _default: VoiceStreamInterface;
-export default _default;
+declare const VoiceStreamer: {
+    init: any;
+    start: any;
+    stop: any;
+};
+export default VoiceStreamer;
