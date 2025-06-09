@@ -1,6 +1,6 @@
 #import <AVFoundation/AVFoundation.h>
-#import <AudioToolbox/AudioToolbox.h>
 #import <React/RCTEventEmitter.h>
+#import <React/RCTLog.h>
 
 #define kNumberBuffers 3
 

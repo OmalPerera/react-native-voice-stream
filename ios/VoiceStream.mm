@@ -87,6 +87,7 @@ void HandleInputBuffer(void *inUserData,
     long nsamples = inBuffer->mAudioDataByteSize;
     NSData *data = [NSData dataWithBytes:samples length:nsamples];
     NSString *str = [data base64EncodedStringWithOptions:0];
+    RCTLogInfo(@"[VoiceStream] data: %@", str);
     [pRecordState->mSelf sendEventWithName:@"data" body:str];
 
     AudioQueueEnqueueBuffer(pRecordState->mQueue, inBuffer, 0, NULL);
