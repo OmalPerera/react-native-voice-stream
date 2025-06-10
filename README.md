@@ -1,5 +1,5 @@
 # react-native-voice-stream
-A React Native library for real-time voice streaming audio as base64-encoded chunks. Perfect for voice messaging, live transcription, or audio-based real-time applications.
+A React Native library for real-time audio recording and streaming as base64-encoded chunks to JavaScript in real-time. Perfect for voice messaging, live transcription, or audio-based real-time applications.
 
 ## Installation
 
