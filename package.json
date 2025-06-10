@@ -2,6 +2,7 @@
   "name": "react-native-voice-stream",
   "version": "0.0.1",
   "description": "A real-time voice streaming as base-64 string chunks",
+  "summary": "A real-time voice streaming as base-64 string chunks",
   "source": "src/index.ts",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
@@ -34,13 +35,16 @@
     "native-module",
     "ios"
   ],
-  "repository": "https://github.com/omalperera/react-native-voice-stream",
+  "repository": "https://github.com/dietdoctor/react-native-voice-stream",
   "author": "Omal Perera <omalperera8@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/omalperera/react-native-voice-stream/issues"
+    "url": "https://github.com/dietdoctor/react-native-voice-stream/issues"
   },
-  "homepage": "https://github.com/omalperera/react-native-voice-stream#readme",
+  "homepage": "https://github.com/dietdoctor/react-native-voice-stream#readme",
+  "authors": [
+    "Omal Perera <omalperera8@gmail.com>"
+  ],
   "devDependencies": {
     "@react-native-community/bob": "^0.17.1",
     "@types/react": "^19.1.6",
