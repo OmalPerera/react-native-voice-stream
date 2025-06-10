@@ -1,30 +1,26 @@
-// @ts-nocheck
+import { IStreamOptions, IVoiceStreamer } from './index.d';
+// @ts-ignore
 import { NativeModules, NativeEventEmitter } from 'react-native';
-
 const { VoiceStream } = NativeModules;
 const EventEmitter = new NativeEventEmitter(VoiceStream);
+const eventKey = 'data';
 
-const VoiceStreamer = {};
+const VoiceStreamer: IVoiceStreamer = {
+  init: (options: IStreamOptions): Promise<void> => {
+    return VoiceStream.init(options);
+  },
 
-VoiceStreamer.init = options => {
-  console.log('nodeM init', options);
-  return VoiceStream.init(options);
-}
-VoiceStreamer.start = () => VoiceStream.start();
-VoiceStreamer.stop = () => VoiceStream.stop();
+  start: (): Promise<void> => VoiceStream.start(),
 
-const eventsMap = {
-  data: 'data'
-};
-
-VoiceStreamer.on = (event, callback) => {
-  console.log('nodeM on', event);
-  const nativeEvent = eventsMap[event];
-  if (!nativeEvent) {
-    throw new Error('Invalid event');
+  stop: (): Promise<void> => VoiceStream.stop(),
+  
+  listen: (event: 'data', callback: (data: string) => void) => {
+    if (event !== eventKey) {
+      throw new Error('Invalid event');
+    }
+    EventEmitter.removeAllListeners(eventKey);
+    return EventEmitter.addListener(eventKey, callback);
   }
-  EventEmitter.removeAllListeners(nativeEvent);
-  return EventEmitter.addListener(nativeEvent, callback);
 };
 
 export default VoiceStreamer;
