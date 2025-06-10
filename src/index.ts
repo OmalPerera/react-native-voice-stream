@@ -1,20 +1,28 @@
-import { IStreamOptions, IVoiceStreamer } from './index.d';
 // @ts-ignore
-import { NativeModules, NativeEventEmitter } from 'react-native';
-const { VoiceStream } = NativeModules;
-const EventEmitter = new NativeEventEmitter(VoiceStream);
-const eventKey = 'data';
+import { NativeModules, NativeEventEmitter, EmitterSubscription } from 'react-native';
+import { VoiceStreamerInterface, VoiceStreamNativeModule, VoiceStreamOptions } from './types';
 
-const VoiceStreamer: IVoiceStreamer = {
-  init: (options: IStreamOptions): Promise<void> => {
+const { VoiceStream } = NativeModules as {
+  VoiceStream: VoiceStreamNativeModule;
+};
+
+const EventEmitter = new NativeEventEmitter(VoiceStream);
+const eventKey: 'data' = 'data';
+
+const VoiceStreamer: VoiceStreamerInterface = {
+  init: (options: VoiceStreamOptions): Promise<void> => {
     return VoiceStream.init(options);
   },
 
-  start: (): Promise<void> => VoiceStream.start(),
+  start: (): Promise<void> => {
+    return VoiceStream.start();
+  },
 
-  stop: (): Promise<void> => VoiceStream.stop(),
+  stop: (): Promise<void> => {
+    return VoiceStream.stop();
+  },
   
-  listen: (event: 'data', callback: (data: string) => void) => {
+  listen: (event: 'data', callback: (data: string) => void): EmitterSubscription => {
     if (event !== eventKey) {
       throw new Error('Invalid event');
     }
